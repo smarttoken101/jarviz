@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis AI Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-2">Jarvis AI Assistant</h1>
+            <p class="text-gray-400">Your personal AI companion</p>
+        </header>
+
+        <div class="max-w-3xl mx-auto bg-gray-800 rounded-lg shadow-lg p-6">
+            <div id="chat-container" class="h-96 overflow-y-auto mb-4 p-4 bg-gray-700 rounded-lg">
+                <div class="welcome-message">
+                    <div class="ai-message">
+                        <p>Hello! I'm Jarvis. How can I assist you today?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <input type="text" id="user-input" 
+                    class="flex-1 px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Type your message here...">
+                <button id="send-btn" 
+                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+                    Send
+                </button>
+                <button id="voice-btn" 
+                    class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
