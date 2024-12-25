@@ -1,12 +1,16 @@
 import streamlit as st
 from Brain.AIBrain import ReplyBrain
 from Brain.Qna import QuestionAnswer
-from pathlib import Path
 import os
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+
+# Check for API key
+if not os.getenv("OPENAI_API_KEY"):
+    st.error("OpenAI API key not found. Please set it in your environment variables or .env file.")
+    st.stop()
 
 # Page config
 st.set_page_config(
@@ -24,21 +28,12 @@ st.markdown("""
     }
     .stTextInput > div > div > input {
         background-color: #2D3748;
-        color: white;
     }
     .stButton button {
         background-color: #3182CE;
-        color: white;
         border-radius: 8px;
     }
-    .user-message {
-        background-color: #3182CE;
-        padding: 1rem;
-        border-radius: 8px;
-        margin: 0.5rem 0;
-    }
-    .assistant-message {
-        background-color: #2D3748;
+    div[data-testid="stChatMessage"] {
         padding: 1rem;
         border-radius: 8px;
         margin: 0.5rem 0;
@@ -46,56 +41,71 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Initialize session state
+# Initialize session state for chat history
 if 'messages' not in st.session_state:
     st.session_state.messages = []
+    st.session_state.messages.append({
+        "role": "assistant",
+        "content": "Hello! I'm Jarvis, your AI assistant. How can I help you today?"
+    })
 
 # Title
 st.title("🤖 Jarvis AI Assistant")
-st.markdown("---")
 
 # Chat interface
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
-        st.write(message["content"])
+        st.markdown(message["content"])
 
 # User input
-prompt = st.chat_input("Type your message here...")
-
-if prompt:
+if prompt := st.chat_input("Type your message here..."):
     # Add user message to chat
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
-        st.write(prompt)
+        st.markdown(prompt)
 
-    # Get AI response
-    with st.spinner("Thinking..."):
-        try:
-            if any(keyword in prompt.lower() for keyword in ["what is", "how to", "explain", "?"]):
-                response = QuestionAnswer(prompt)
-            else:
-                response = ReplyBrain(prompt)
+    # Show typing indicator
+    with st.chat_message("assistant"):
+        with st.spinner("Thinking..."):
+            try:
+                # Determine if it's a question
+                if any(keyword in prompt.lower() for keyword in ["what", "how", "why", "when", "where", "?"]):
+                    response = QuestionAnswer(prompt)
+                else:
+                    response = ReplyBrain(prompt)
+                
+                # Add assistant response to chat
+                st.session_state.messages.append({"role": "assistant", "content": response})
+                st.markdown(response)
             
-            # Add assistant response to chat
-            st.session_state.messages.append({"role": "assistant", "content": response})
-            with st.chat_message("assistant"):
-                st.write(response)
-        
-        except Exception as e:
-            st.error("Sorry, I encountered an error. Please try again.")
-            print(f"Error: {str(e)}")
+            except Exception as e:
+                st.error("Sorry, I encountered an error. Please try again.")
+                print(f"Error: {str(e)}")
 
-# Add information about the app
+# Sidebar
 with st.sidebar:
     st.markdown("## About Jarvis")
     st.markdown("""
     Jarvis is your AI assistant powered by OpenAI's GPT models. 
     
-    Features:
-    - 💭 Chat naturally
-    - ❓ Ask questions
-    - 🤝 Get helpful responses
+    ### Features
+    - 💭 Natural conversation
+    - ❓ Q&A capabilities
+    - 🤝 Helpful responses
+    
+    ### Tips
+    - Be specific in your questions
+    - You can ask follow-up questions
+    - Use clear language
     """)
+    
+    # Clear chat button
+    if st.button("Clear Chat"):
+        st.session_state.messages = [{
+            "role": "assistant",
+            "content": "Hello! I'm Jarvis, your AI assistant. How can I help you today?"
+        }]
+        st.experimental_rerun()
     
     st.markdown("---")
     st.markdown("Made with ❤️ using Streamlit")
