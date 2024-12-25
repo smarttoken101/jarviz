@@ -1,12 +1,12 @@
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
 # Load environment variables
 load_dotenv()
 
-# OpenAI API Key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Initialize OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def QuestionAnswer(question):
     try:
@@ -15,17 +15,14 @@ def QuestionAnswer(question):
             {"role": "user", "content": question}
         ]
 
-        response = openai.ChatCompletion.create(
-            model="gpt-4o",  # Updated to correct model name
+        response = client.chat.completions.create(
+            model="gpt-4",  # Updated model name
             messages=messages,
             temperature=0.5,
-            max_tokens=150,
-            top_p=1.0,
-            frequency_penalty=0.0,
-            presence_penalty=0.0
+            max_tokens=150
         )
         
-        return response.choices[0].message['content'].strip()
+        return response.choices[0].message.content.strip()
         
     except Exception as e:
         print(f"Error in QuestionAnswer: {str(e)}")
