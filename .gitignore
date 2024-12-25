@@ -32,6 +32,7 @@ ENV/
 
 # Environment variables
 .env
+Data/Api.txt
 
 # Operating System
 .DS_Store

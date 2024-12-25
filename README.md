@@ -9,18 +9,28 @@ A modern AI chatbot with web interface, built using Streamlit and OpenAI.
 - 🌐 Web-based access
 
 ## Setup
-1. Install dependencies:
+
+### Windows
 ```bash
+# Create and activate virtual environment
+setup.bat
+
+# Run the app
+venv\Scripts\streamlit run streamlit_app.py
+```
+
+### Unix/Linux/Mac
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
-```
 
-2. Create a `.env` file with your OpenAI API key:
-```
-OPENAI_API_KEY=your_key_here
-```
-
-3. Run the app:
-```bash
+# Run the app
 streamlit run streamlit_app.py
 ```
 
