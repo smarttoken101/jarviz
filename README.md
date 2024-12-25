@@ -1,30 +1,33 @@
 # Jarvis AI Assistant
 
-A modern AI chatbot with voice and text interaction capabilities, built using Streamlit.
+A modern AI chatbot with web interface, built using Streamlit and OpenAI.
 
 ## Features
-
-- 🤖 Advanced AI-powered responses
-- 🎤 Voice input support
-- 💬 Text chat interface
-- 🌙 Dark mode UI
-- 📱 Responsive design
+- 🤖 GPT-powered responses
+- 💬 Chat interface
+- ❓ Q&A mode
+- 🌐 Web-based access
 
 ## Setup
-
 1. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Run the application:
+2. Create a `.env` file with your OpenAI API key:
+```
+OPENAI_API_KEY=your_key_here
+```
+
+3. Run the app:
 ```bash
 streamlit run streamlit_app.py
 ```
 
 ## Deployment
-
-This application is ready to deploy on Streamlit Cloud. Visit https://streamlit.io/cloud to deploy.
+1. Push to GitHub
+2. Deploy on [Streamlit Cloud](https://streamlit.io/cloud)
+3. Set environment variables in Streamlit Cloud settings
 
 ## Structure
 
